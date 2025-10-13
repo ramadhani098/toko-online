@@ -1,0 +1,124 @@
+/* Gaya kustom */
+body {
+    font-family: 'Inter', sans-serif;
+}
+
+.product-card {
+    /* Gaya untuk Product Card yang lebih halus dan premium */
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 1px solid #e5e7eb; /* border tipis */
+    position: relative; /* Penting untuk badge */
+}
+
+.product-card:hover {
+    transform: translateY(-10px); /* Efek melayang lebih dramatis */
+    /* Neumorphism-like Shadow: shadow lembut di bawah */
+    box-shadow: 0 20px 30px -10px rgba(99, 102, 241, 0.3), 0 5px 15px -5px rgba(0, 0, 0, 0.05); 
+}
+
+/* Animasi untuk modal saat muncul */
+@keyframes modal-in {
+    from {
+        transform: scale(0.9);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+.modal-content.show {
+    animation: modal-in 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards; /* Efek pegas yang lebih jelas */
+}
+
+/* Animasi untuk notifikasi */
+@keyframes toast-in {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.toast-notification {
+    animation: toast-in 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; 
+}
+/* ... (KODE CSS SEBELUM FOOTER SAMA) ... */
+
+/* -------------------- FOOTER STYLES PREMIUM -------------------- */
+
+.footer-link {
+    /* Menambahkan transisi pada link untuk efek hover yang halus */
+    transition: color 0.2s ease-in-out;
+}
+
+/* Mengatur warna link saat di-hover */
+.footer-link:hover {
+    color: #f43f5e; /* Warna accent (rose) saat hover */
+}
+
+/* Mengganti placeholder text di form footer agar lebih terlihat */
+#newsletter-form input::placeholder,
+#contact-form input::placeholder {
+    color: #a0aec0; /* Warna placeholder abu-abu terang */
+    font-weight: 300;
+}
+
+/* Gaya untuk garis pembatas di bawah judul footer */
+footer h4 {
+    position: relative;
+    padding-bottom: 0.5rem;
+}
+
+footer h4::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 50px; /* Garis pemisah pendek */
+    height: 3px;
+    background-color: #f43f5e; /* Warna accent (rose) */
+    border-radius: 2px;
+}
+
+/* Menambahkan bayangan pada input form di footer */
+#newsletter-form input,
+#contact-form input {
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+/* Responsif: Menyesuaikan tata letak untuk layar kecil (mobile) */
+@media (max-width: 767px) {
+    /* Mengatur tata letak tumpukan di HP */
+    .container.mx-auto > div {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+        text-align: center;
+    }
+
+    /* Memastikan judul berada di tengah pada HP */
+    footer h4 {
+        text-align: center;
+    }
+
+    /* Memindahkan garis pemisah ke tengah di HP */
+    footer h4::after {
+        left: 50%;
+        transform: translateX(-50%);
+    }
+
+    /* Mengatur navigasi dan sosial media ke tengah */
+    footer ul {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    footer .flex.space-x-4 {
+        justify-content: center;
+    }
+}
