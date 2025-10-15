@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Toko Online Tervis</title>
+    <title>Toko Online Tervis - Premium Collection</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -15,38 +15,185 @@
                         'primary-dark': '#4f46e5', // indigo-600
                         'accent': '#f43f5e', // rose-500
                         'whatsapp': '#25D366', 
+                        // Menambahkan warna untuk link footer
+                        'primary-lighter': '#818cf8' 
                     },
                     keyframes: {
                         'wiggle': {
                             '0%, 100%': { transform: 'rotate(-3deg)' },
                             '50%': { transform: 'rotate(3deg)' },
+                        },
+                        'bounce-slow': {
+                            '0%, 100%': { transform: 'translateY(-2%)' },
+                            '50%': { transform: 'translateY(0)' },
+                        },
+                        'modal-in': {
+                            '0%': { opacity: '0', transform: 'scale(0.95)' },
+                            '100%': { opacity: '1', transform: 'scale(1)' },
                         }
                     },
                     animation: {
                         'wiggle-once': 'wiggle 0.3s ease-in-out',
+                        'bounce-slow': 'bounce-slow 2s infinite ease-in-out', 
+                        'modal-in': 'modal-in 0.3s ease-out forwards', 
                     }
                 }
             }
         }
     </script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link rel="stylesheet" href="style.css">
+    
+    <style>
+        /* 1. Global Reset & Smooth Transitions */
+        * {
+            transition: color 0.2s ease-in-out, background-color 0.2s ease-in-out, border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* 2. Focus Ring Kustom */
+        input:focus, 
+        textarea:focus,
+        select:focus {
+            outline: none !important; 
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.3) !important;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* 3. Gaya Produk & Animasi */
+        .product-card {
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid #e5e7eb;
+            position: relative;
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 30px -10px rgba(99, 102, 241, 0.3), 0 5px 15px -5px rgba(0, 0, 0, 0.05); 
+        }
+
+        /* Animasi Modal */
+        @keyframes modal-in {
+            from { transform: scale(0.9); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+        .modal-content.is-active {
+            animation: modal-in 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+            opacity: 1;
+            transform: scale(1);
+        }
+        
+        /* Animasi Toast */
+        @keyframes toast-in {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        .toast-notification {
+            animation: toast-in 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; 
+        }
+
+        /* 4. Gaya Footer Premium */
+        .footer-link {
+            transition: color 0.2s ease-in-out;
+        }
+
+        .footer-link:hover {
+            color: #f43f5e;
+        }
+
+        /* Placeholder */
+        #newsletter-form input::placeholder,
+        #contact-form input::placeholder,
+        #contact-form textarea::placeholder {
+            color: #a0aec0;
+            font-weight: 300;
+        }
+        
+        /* Garis Bawah Judul Footer */
+        footer h4 {
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+
+        footer h4::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 50px;
+            height: 3px;
+            background-color: #f43f5e;
+            border-radius: 2px;
+        }
+        
+        /* Input Shadow Footer */
+        #newsletter-form input,
+        #contact-form input,
+        #contact-form textarea {
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Responsif Footer */
+        @media (max-width: 767px) {
+            footer h4::after {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+            footer .flex.space-x-4 {
+                justify-content: center;
+            }
+        }
+        
+        /* Kelas aktif untuk navigasi */
+        .nav-active {
+            color: theme('colors.primary-dark') !important;
+            border-bottom-width: 2px;
+            border-color: theme('colors.primary');
+        }
+        .nav-mobile-active {
+            background-color: theme('colors.primary/10') !important;
+            color: theme('colors.primary') !important;
+        }
+    </style>
 </head>
 <body class="bg-gray-50"> 
 
     <header class="bg-white shadow-xl sticky top-0 z-40 border-b-4 border-primary/20">
         <div class="container mx-auto px-6 py-5">
             <div class="flex justify-between items-center mb-4">
-                <h1 class="text-3xl font-extrabold text-primary-dark tracking-wide">Toko<span class="text-accent">Tervis</span> </h1> 
-                <div id="openCartBtn" class="relative cursor-pointer hover:opacity-80 transition p-2 rounded-full bg-gray-100 hover:bg-gray-200">
-                    <i class="fas fa-shopping-bag text-gray-700 text-2xl"></i> <span id="cart-count" class="absolute -top-1 -right-1 bg-accent text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center shadow-lg">0</span>
+                <div class="flex items-center space-x-4">
+                    <button id="mobileMenuBtn" class="lg:hidden text-gray-600 hover:text-primary p-2 rounded-lg hover:bg-gray-100 transition">
+                        <i class="fas fa-bars text-xl"></i>
+                    </button>
+                    <h1 class="text-3xl font-extrabold text-primary-dark tracking-wide">Toko<span class="text-accent">Tervis</span> </h1> 
                 </div>
+
+                <div class="flex items-center space-x-4">
+                    <nav class="hidden lg:flex space-x-6 text-gray-700 font-semibold" id="desktop-nav">
+                        <a href="#" class="hover:text-primary transition duration-150 p-2 nav-active" data-section="home">Beranda</a> 
+                        <a href="#about" class="hover:text-primary transition duration-150 p-2" data-section="about">Tentang Kami</a>
+                        <a href="#contact-address-map" class="hover:text-primary transition duration-150 p-2" data-section="contact">Kontak & Alamat</a>
+                    </nav>
+
+                    <div id="openCartBtn" class="relative cursor-pointer hover:opacity-80 transition p-2 rounded-full bg-gray-100 hover:bg-gray-200">
+                        <i class="fas fa-shopping-bag text-gray-700 text-2xl"></i> <span id="cart-count" class="absolute -top-1 -right-1 bg-accent text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center shadow-lg">0</span>
+                    </div>
+                </div>
+            </div>
+
+            <div id="mobileMenu" class="hidden lg:hidden bg-gray-50 rounded-lg shadow-inner mb-4 p-4 space-y-2 border-l-4 border-primary/50">
+                <a href="#" class="block text-gray-700 hover:bg-primary/10 hover:text-primary font-medium p-2 rounded-md transition nav-mobile-active" data-section="home">Beranda</a>
+                <a href="#about" class="block text-gray-700 hover:bg-primary/10 hover:text-primary font-medium p-2 rounded-md transition" data-section="about">Tentang Kami</a>
+                <a href="#contact-address-map" class="block text-gray-700 hover:bg-primary/10 hover:text-primary font-medium p-2 rounded-md transition" data-section="contact">Kontak & Alamat</a>
             </div>
 
             <div class="relative flex items-center mb-4">
                 <i class="fas fa-magnifying-glass absolute left-4 text-primary"></i>
                 <input type="text" id="search-input" placeholder="Cari produk mewah di sini..." 
-                       class="w-full pl-12 pr-10 py-3 border-2 border-primary/20 bg-white rounded-xl focus:ring-accent focus:border-accent transition duration-200 shadow-inner text-gray-700 placeholder-gray-400 font-medium">
+                        class="w-full pl-12 pr-10 py-3 border-2 border-primary/20 bg-white rounded-xl focus:ring-accent focus:border-accent transition duration-200 shadow-inner text-gray-700 placeholder-gray-400 font-medium">
                 <button id="clear-search-btn" class="absolute right-3 text-gray-400 hover:text-accent hidden" title="Hapus Pencarian">
                     <i class="fas fa-xmark text-lg"></i>
                 </button>
@@ -57,19 +204,117 @@
                 <label for="category-filter" class="text-gray-700 font-semibold">Filter Kategori:</label>
                 <select id="category-filter" class="flex-grow p-2 border border-gray-300 rounded-lg shadow-sm focus:ring-primary focus:border-primary transition duration-150 bg-white cursor-pointer">
                     <option value="all">Semua Produk</option>
-                    </select>
+                </select>
             </div>
             </div>
     </header>
     
     <main class="container mx-auto p-4 md:p-10">
+        
+        <section id="about" class="py-12 bg-white rounded-xl shadow-lg mb-10 hidden">
+            <h2 class="text-4xl font-extrabold text-primary-dark text-center mb-6">Tentang TokoTervis</h2>
+            <p class="text-gray-700 text-center max-w-3xl mx-auto px-4">Kami adalah destinasi utama untuk produk-produk premium dengan kualitas tak tertandingi. Sejak 2020, kami berkomitmen untuk menyediakan koleksi eksklusif yang memadukan desain elegan dan fungsionalitas terbaik.</p>
+        </section>
+        
+        <section id="contact-address-map" class="py-12 bg-white rounded-xl shadow-2xl mb-10 hidden">
+            <h2 class="text-4xl font-extrabold text-primary-dark text-center mb-10">Kontak, Alamat, dan Peta 📍</h2>
+            
+            <div class="max-w-6xl mx-auto px-6 md:px-10 grid grid-cols-1 lg:grid-cols-3 gap-8">
+                
+                <div class="space-y-6 p-6 bg-primary/5 rounded-xl border border-primary/10 shadow-lg">
+                    <h3 class="text-2xl font-bold text-primary-dark flex items-center mb-4 border-b pb-2">
+                        <i class="fas fa-phone-volume mr-3 text-accent"></i> Informasi Kontak
+                    </h3>
+                    <div class="flex items-start space-x-4">
+                        <i class="fas fa-envelope text-xl text-primary mt-1 flex-shrink-0"></i>
+                        <div>
+                            <p class="font-semibold text-lg text-gray-800">Email Layanan Pelanggan</p>
+                            <a href="mailto:support@tokotervis.com" class="text-gray-600 hover:text-accent transition">support@tokotervis.com</a>
+                        </div>
+                    </div>
+                    <div class="flex items-start space-x-4">
+                        <i class="fab fa-whatsapp text-xl text-primary mt-1 flex-shrink-0"></i>
+                        <div>
+                            <p class="font-semibold text-lg text-gray-800">WhatsApp / Telepon</p>
+                            <a href="tel:+6281234567890" class="text-gray-600 hover:text-accent transition">+62 812-3456-7890 (CS Cepat)</a>
+                        </div>
+                    </div>
+                    <div class="flex items-start space-x-4">
+                        <i class="fas fa-headset text-xl text-primary mt-1 flex-shrink-0"></i>
+                        <div>
+                            <p class="font-semibold text-lg text-gray-800">Jam Operasional</p>
+                            <p class="text-gray-600">Senin - Jumat: 09:00 - 17:00 WIB</p>
+                            <p class="text-gray-600">Sabtu: 09:00 - 14:00 WIB</p>
+                            <p class="text-accent font-bold text-sm mt-1">Minggu/Hari Libur: Tutup</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-1 space-y-6 p-6 bg-primary/5 rounded-xl border border-primary/10 shadow-lg">
+                    <h3 class="text-2xl font-bold text-primary-dark flex items-center mb-4 border-b pb-2">
+                        <i class="fas fa-map-marker-alt mr-3 text-accent"></i> Alamat Butik Kami
+                    </h3>
+                    
+                    <p class="font-bold text-xl text-gray-900">TokoTervis Experience Center</p>
+                    <address class="text-gray-700 not-italic leading-relaxed">
+                        Jalan Kemewahan No. 10, <br> 
+                        Suite Premium Lantai 5, <br>
+                        Gedung Elite, Kota Jakarta Selatan, 12345.
+                    </address>
+                    <a href="https://maps.app.goo.gl/ContohLinkGoogleMaps" target="_blank" class="text-primary hover:text-accent font-bold flex items-center transition mt-4">
+                        <i class="fas fa-directions mr-2"></i> Petunjuk Arah Google Maps
+                    </a>
+                </div>
+
+                <div class="lg:col-span-1 p-0 rounded-xl overflow-hidden shadow-2xl border-4 border-primary/50">
+                    <h3 class="sr-only">Lokasi Peta</h3>
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d15866.502845347253!2d106.8202419!3d-6.1751109!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69f5d2e071e621%3A0x63428987162985b4!2sNational%20Monument!5e0!3m2!1sen!2sid!4v1704144000000!5m2!1sen!2sid" 
+                            width="100%" 
+                            height="400" 
+                            style="border:0;" 
+                            allowfullscreen="" 
+                            loading="lazy" 
+                            referrerpolicy="no-referrer-when-downgrade"
+                            class="w-full h-full min-h-[300px]"></iframe>
+                </div>
+            </div>
+        </section>
+
+        <section id="direct-contact" class="py-12 bg-white rounded-xl shadow-2xl mb-10 hidden">
+            <h2 class="text-4xl font-extrabold text-primary-dark text-center mb-10">Kirim Pesan Langsung 📧</h2>
+            
+            <div class="max-w-xl mx-auto px-6 md:px-10 space-y-6 p-8 bg-accent/5 rounded-xl border border-accent/10 shadow-lg">
+                <form id="direct-contact-form" class="space-y-4">
+                    <div>
+                        <label for="form-name" class="block text-sm font-medium text-gray-700 mb-1">Nama Lengkap</label>
+                        <input type="text" id="form-name" placeholder="Nama Anda" required
+                               class="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:border-primary focus:ring-primary transition duration-150 text-base shadow-sm">
+                    </div>
+                    <div>
+                        <label for="form-email" class="block text-sm font-medium text-gray-700 mb-1">Email Aktif</label>
+                        <input type="email" id="form-email" placeholder="contoh@mail.com" required
+                               class="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:border-primary focus:ring-primary transition duration-150 text-base shadow-sm">
+                    </div>
+                    <div>
+                        <label for="form-message" class="block text-sm font-medium text-gray-700 mb-1">Pesan Anda</label>
+                        <textarea id="form-message" rows="4" placeholder="Tuliskan pertanyaan atau saran Anda di sini..." required
+                                  class="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:border-primary focus:ring-primary transition duration-150 text-base shadow-sm"></textarea>
+                    </div>
+                    <button type="submit" id="form-submit-btn" class="w-full bg-primary text-white py-3 rounded-xl font-extrabold hover:bg-primary-dark transition-colors duration-200 shadow-xl shadow-primary/40 flex items-center justify-center space-x-3 text-lg transform hover:-translate-y-0.5">
+                        <i class="fas fa-arrow-right"></i>
+                        <span>Kirim Pesan Sekarang</span>
+                    </button>
+                </form>
+            </div>
+        </section>
+        
         <div id="loader" class="text-center py-20">
             <i class="fas fa-box-open fa-bounce text-5xl text-primary"></i> 
             <p class="mt-4 text-gray-600 font-semibold">Memuat koleksi Barang...</p>
         </div>
-
+        
         <div id="product-grid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-            </div>
+        </div>
 
         <div id="error-message" class="hidden text-center bg-red-50 border-2 border-red-300 text-red-700 p-8 rounded-xl shadow-lg mt-10">
             <i class="fas fa-triangle-exclamation mr-2 text-xl"></i>
@@ -84,32 +329,32 @@
     </main>
 
     <div id="productModal" class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center p-4 z-50 hidden">
-        <div class="bg-white rounded-3xl shadow-2xl w-full max-w-4xl max-h-[95vh] overflow-y-auto transform transition-all duration-300 scale-95 opacity-0 modal-content">
+        <div class="bg-white rounded-3xl shadow-2xl w-full max-w-4xl max-h-[95vh] overflow-y-auto transform scale-95 opacity-0 modal-content">
             <div class="p-8 sm:p-10">
                 <div class="flex justify-between items-start pb-5 border-b border-gray-200">
-                    <h3 class="text-3xl font-extrabold text-gray-900" id="modal-title">Detail Produk Eksklusif</h3>
-                    <button id="closeModalBtn" class="text-gray-400 hover:text-accent transition duration-150 p-2">
+                    <h3 class="text-3xl font-extrabold text-primary-dark" id="modal-title">Detail Produk Eksklusif</h3>
+                    <button id="closeModalBtn" class="text-gray-400 hover:text-accent transition duration-150 p-2 rounded-full hover:bg-gray-100">
                         <i class="fas fa-xmark fa-xl"></i>
                     </button>
                 </div>
                 <div class="mt-8 lg:flex lg:space-x-10">
-                    <div class="lg:w-2/5 flex-shrink-0 bg-gray-100 p-6 rounded-2xl flex items-center justify-center shadow-inner">
-                        <img id="modal-image" src="https://placehold.co/400x400" alt="Product Image" class="w-full h-auto object-contain max-h-[400px] rounded-lg">
+                    <div class="lg:w-2/5 flex-shrink-0 bg-gray-100 p-8 rounded-3xl flex items-center justify-center shadow-inner border-4 border-primary/20">
+                        <img id="modal-image" src="https://placehold.co/400x400" alt="Product Image" class="w-full h-auto object-contain max-h-[400px] rounded-lg transform transition duration-300 hover:scale-[1.03]">
                     </div>
                     <div class="mt-6 lg:mt-0 lg:w-3/5">
-                        <span id="modal-category" class="text-sm bg-primary/10 text-primary-dark px-4 py-1 rounded-full font-bold capitalize shadow-md">Kategori</span>
-                        <h4 class="text-4xl font-extrabold text-gray-900 my-4" id="modal-product-name">Nama Produk</h4>
+                        <span id="modal-category" class="text-sm bg-accent/10 text-accent px-4 py-1 rounded-full font-bold capitalize shadow-md">Kategori</span>
+                        <h4 class="text-5xl font-extrabold text-gray-900 my-4 leading-tight" id="modal-product-name">Nama Produk</h4>
                         
-                        <div class="flex items-center mb-5">
-                             <span class="text-yellow-500 mr-2 text-lg"><i class="fas fa-star"></i> 4.5</span>
-                             <span class="text-md text-gray-500 font-medium">(150 Penilaian)</span>
+                        <div class="flex items-center mb-5 border-b pb-4">
+                             <span class="text-yellow-500 mr-2 text-xl"><i class="fas fa-star"></i> 4.5</span>
+                             <span class="text-lg text-gray-500 font-medium">(150 Penilaian Pelanggan)</span>
                         </div>
                         
-                        <p class="text-5xl font-extrabold text-accent mb-6" id="modal-price">Rp 0</p>
+                        <p class="text-6xl font-extrabold text-accent mb-6" id="modal-price">Rp 0</p>
                         <p class="text-gray-700 text-lg leading-relaxed border-t pt-5" id="modal-description">Deskripsi produk akan muncul di sini. Detail eksklusif tentang bahan dan kualitas.</p>
                         
-                        <button id="modal-add-to-cart" class="mt-10 w-full bg-primary text-white py-4 rounded-xl font-bold hover:bg-primary-dark transition-colors duration-200 shadow-xl shadow-primary/40 flex items-center justify-center space-x-3 text-xl">
-                            <i class="fas fa-cart-plus"></i>
+                        <button id="modal-add-to-cart" class="mt-10 w-full bg-primary text-white py-4 rounded-xl font-extrabold hover:bg-primary-dark transition-colors duration-200 shadow-2xl shadow-primary/50 flex items-center justify-center space-x-3 text-xl transform hover:-translate-y-1">
+                            <i class="fas fa-cart-plus text-2xl"></i>
                             <span>Tambahkan ke Tas Belanja</span>
                         </button>
                     </div>
@@ -118,59 +363,88 @@
         </div>
     </div>
 
-    <div id="cartSidebar" class="fixed top-0 right-0 h-full w-full md:w-[480px] bg-gray-50 shadow-2xl z-50 transform translate-x-full transition-transform duration-500 ease-in-out flex flex-col border-l-4 border-accent">
-    <div class="p-6 border-b border-gray-200 flex justify-between items-center bg-white shadow-lg sticky top-0 z-10">
-        <h2 class="text-3xl font-extrabold text-primary-dark flex items-center">
-            <i class="fas fa-shopping-bag mr-3 text-accent animate-bounce-slow"></i> Tas Belanja
-        </h2>
-        <button id="closeCartBtn" class="text-gray-500 hover:text-accent transition duration-150 p-2 rounded-full hover:bg-gray-100">
-            <i class="fas fa-xmark fa-xl"></i>
-        </button>
+    <div id="cartSidebar" class="fixed top-0 right-0 h-full w-full md:w-[400px] bg-white shadow-2xl z-50 transform translate-x-full transition-transform duration-500 ease-in-out flex flex-col border-l-8 border-primary">
+        
+        <div class="p-5 border-b-4 border-accent/20 flex justify-between items-center bg-primary-dark text-white shadow-xl sticky top-0 z-10">
+            <h2 class="text-2xl font-extrabold flex items-center">
+                <i class="fas fa-shopping-bag mr-3 text-accent animate-bounce-slow text-xl"></i> Tas Belanja Anda
+            </h2>
+            <button id="closeCartBtn" class="text-white hover:text-accent transition duration-150 p-1 rounded-full bg-white/20 hover:bg-white/30">
+                <i class="fas fa-xmark text-xl"></i>
+            </button>
+        </div>
+        
+        <div id="cart-items-container" class="flex-grow overflow-y-auto p-4 space-y-4 bg-gray-50">
+            
+            <div id="empty-cart-message" class="text-center py-10 text-gray-400">
+                <i class="fas fa-box-open fa-5x mb-3 text-gray-300"></i>
+                <p class="font-bold text-xl text-gray-600">Keranjang Anda kosong!</p>
+                <p class="text-sm mt-1">Segera temukan koleksi premium favorit Anda.</p>
+            </div>
+            
+            <template id="cart-item-template">
+                <div class="cart-item flex bg-white p-3 rounded-lg shadow-md border border-gray-100 transition-shadow duration-200 hover:shadow-lg hover:border-accent/50 items-center">
+                    <img class="w-16 h-16 object-cover rounded-lg flex-shrink-0 mr-3 border border-gray-100" data-cart-image src="" alt="Product Image">
+                    
+                    <div class="flex-grow">
+                        <h4 class="text-base font-semibold text-primary-dark truncate" data-cart-name>Nama Produk Super Mewah</h4>
+                        <p class="text-xs text-gray-500 mt-1 mb-2" data-cart-category>Kategori Barang</p>
+                        
+                        <div class="flex justify-between items-center">
+                            <div class="flex items-center space-x-0 border border-primary rounded-md">
+                                <button class="update-qty-btn bg-primary text-white w-6 h-6 rounded-l-md text-sm font-bold hover:bg-primary-dark transition" data-action="decrease">-</button>
+                                <span class="text-sm font-bold text-gray-800 w-5 text-center" data-cart-qty>1</span>
+                                <button class="update-qty-btn bg-primary text-white w-6 h-6 rounded-r-md text-sm font-bold hover:bg-primary-dark transition" data-action="increase">+</button>
+                            </div>
+                            
+                            <p class="text-xl font-extrabold text-accent" data-cart-price>Rp 0</p>
+                        </div>
+                    </div>
+                    
+                    <button class="remove-item-btn ml-3 text-accent/50 hover:text-accent transition duration-150 flex-shrink-0 self-start p-1 rounded-full hover:bg-accent/10" title="Hapus Item">
+                        <i class="fas fa-trash-can text-base"></i>
+                    </button>
+                </div>
+            </template>
+        </div>
+
+        <div class="p-5 border-t-8 border-accent/50 bg-white shadow-t-2xl">
+            
+            <form id="shipping-form" class="space-y-3 mb-5 p-4 bg-primary-lighter/10 rounded-lg border border-primary/30 shadow-inner">
+                <h3 class="text-lg font-bold text-gray-800 border-b border-primary/50 pb-2 mb-2 flex items-center">
+                    <i class="fas fa-truck-fast text-primary mr-2 text-base"></i> Detail Pengiriman
+                </h3>
+                
+                <div>
+                    <input type="text" id="nama-penerima" placeholder="Nama Penerima" required
+                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:border-accent focus:ring-accent transition duration-150 text-sm shadow-sm">
+                </div>
+                
+                <div>
+                    <input type="tel" id="nomor-hp" placeholder="Nomor HP" required
+                            class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:border-accent focus:ring-accent transition duration-150 text-sm shadow-sm">
+                </div>
+                
+                <div>
+                    <textarea id="alamat-lengkap" rows="2" placeholder="Alamat Lengkap" required
+                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:border-accent focus:ring-accent transition duration-150 text-sm shadow-sm"></textarea>
+                </div>
+            </form>
+            
+            <div class="flex justify-between font-extrabold text-2xl mb-4 p-3 rounded-lg bg-accent/20 border-l-4 border-accent">
+                <span class="text-primary-dark">TOTAL:</span>
+                <span id="cart-total" class="text-accent text-3xl">Rp 0</span>
+            </div>
+            
+            <button id="whatsappCheckoutBtn" class="w-full bg-whatsapp text-white py-4 rounded-xl font-extrabold hover:bg-green-600 transition-colors duration-200 flex items-center justify-center space-x-3 shadow-xl shadow-whatsapp/50 text-lg transform hover:-translate-y-0.5">
+                <i class="fab fa-whatsapp text-2xl"></i>
+                <span>Order via WhatsApp (<span id="total-items-checkout">0</span> item)</span>
+            </button>
+        </div>
     </div>
     
-    <div id="cart-items-container" class="flex-grow overflow-y-auto p-6 space-y-6 bg-gray-50">
-        <div id="empty-cart-message" class="hidden text-center py-20 text-gray-400">
-            <i class="fas fa-box-open fa-5x mb-4 text-gray-300"></i>
-            <p class="font-bold text-xl text-gray-600">Keranjang Anda kosong!</p>
-            <p class="text-md mt-2">Segera temukan koleksi premium favorit Anda.</p>
-        </div>
-    </div>
-
-    <div class="p-6 border-t-4 border-gray-300 bg-white shadow-t-2xl">
-        
-        <form id="shipping-form" class="space-y-3 mb-5 p-4 bg-primary-lighter/30 rounded-xl border border-primary/40 shadow-inner">
-            <h3 class="text-lg font-bold text-gray-800 border-b-2 border-primary/50 pb-2 mb-3 flex items-center">
-                <i class="fas fa-truck-fast text-primary mr-2"></i> Detail Pengiriman
-            </h3>
-            
-            <div>
-                <input type="text" id="nama-penerima" placeholder="Nama Penerima Lengkap" required
-                       class="w-full px-3 py-2 border-2 border-gray-300 rounded-lg focus:border-accent focus:ring-accent transition duration-150 text-sm shadow-sm">
-            </div>
-            
-            <div>
-                <input type="tel" id="nomor-hp" placeholder="Nomor HP (WhatsApp aktif)" required
-                       class="w-full px-3 py-2 border-2 border-gray-300 rounded-lg focus:border-accent focus:ring-accent transition duration-150 text-sm shadow-sm">
-            </div>
-            
-            <div>
-                <textarea id="alamat-lengkap" rows="2" placeholder="Alamat Lengkap (Jalan, Kota, Kode Pos)" required
-                          class="w-full px-3 py-2 border-2 border-gray-300 rounded-lg focus:border-accent focus:ring-accent transition duration-150 text-sm shadow-sm"></textarea>
-            </div>
-        </form>
-        
-        <div class="flex justify-between font-extrabold text-2xl mb-5 p-2 border-y-2 border-accent/50">
-            <span>TOTAL:</span>
-            <span id="cart-total" class="text-accent text-3xl">Rp 0</span>
-        </div>
-        
-        <button id="whatsappCheckoutBtn" class="w-full bg-whatsapp text-white py-4 rounded-xl font-bold hover:bg-green-600 transition-colors duration-200 flex items-center justify-center space-x-3 shadow-xl shadow-whatsapp/40 text-lg transform hover:-translate-y-1 hover:shadow-2xl">
-            <i class="fab fa-whatsapp text-2xl"></i>
-            <span>Selesaikan Order via WhatsApp (<span id="total-items-checkout">0</span> item)</span>
-        </button>
-    </div>
-</div>
     <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col space-y-2"></div>
+    
     <footer class="bg-primary-dark text-white pt-16 pb-8">
         <div class="container mx-auto px-4 md:px-8 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-12">
             
@@ -188,8 +462,9 @@
                 <h4 class="text-xl font-bold mb-4 border-b border-primary/50 pb-2">Navigasi</h4>
                 <ul class="space-y-2">
                     <li><a href="#" class="footer-link text-primary-lighter">Beranda</a></li>
-                    <li><a href="#" class="footer-link text-primary-lighter">Tentang Kami</a></li>
-                    <li><a href="#" class="footer-link text-primary-lighter">Koleksi Terbaru</a></li>
+                    <li><a href="#about" class="footer-link text-primary-lighter">Tentang Kami</a></li>
+                    <li><a href="#contact-address-map" class="footer-link text-primary-lighter">Kontak & Alamat</a></li>
+                    <li><a href="#direct-contact" class="footer-link text-primary-lighter">Kirim Pesan</a></li>
                     <li><a href="#" class="footer-link text-primary-lighter">Kebijakan Privasi</a></li>
                 </ul>
             </div>
@@ -198,9 +473,9 @@
                 <h4 class="text-xl font-bold mb-4 border-b border-primary/50 pb-2">Pesan Cepat</h4>
                 <form id="contact-form" class="space-y-4">
                     <input type="text" id="contact-name" placeholder="Nama Anda" required
-                           class="w-full px-4 py-2 rounded-lg border-none focus:ring-accent focus:border-accent text-gray-800 shadow-inner text-sm">
+                            class="w-full px-4 py-2 rounded-lg border-none focus:ring-accent focus:border-accent text-gray-800 shadow-inner text-sm">
                     <input type="email" id="contact-email" placeholder="Email Anda" required
-                           class="w-full px-4 py-2 rounded-lg border-none focus:ring-accent focus:border-accent text-gray-800 shadow-inner text-sm">
+                            class="w-full px-4 py-2 rounded-lg border-none focus:ring-accent focus:border-accent text-gray-800 shadow-inner text-sm">
                     <button type="submit" id="contact-submit-btn"
                             class="w-full bg-accent text-white py-2 rounded-lg font-bold hover:bg-rose-600 transition-colors duration-200 shadow-md flex items-center justify-center space-x-2 text-sm">
                         <i class="fas fa-paper-plane"></i>
@@ -209,13 +484,13 @@
                 </form>
             </div>
             
-             <div>
+            <div>
                 <h4 class="text-xl font-bold mb-4 border-b border-primary/50 pb-2">Langganan Newsletter</h4>
                 <p class="text-primary-lighter mb-4 text-sm">Dapatkan info diskon dan koleksi eksklusif.</p>
                 <form id="newsletter-form" class="flex flex-col gap-2">
                     <input type="email" id="newsletter-email" placeholder="Email Anda" required
-                           class="flex-grow px-4 py-3 rounded-lg border-none focus:ring-accent focus:border-accent text-gray-800 shadow-inner"
-                           aria-label="Email untuk langganan newsletter">
+                            class="flex-grow px-4 py-3 rounded-lg border-none focus:ring-accent focus:border-accent text-gray-800 shadow-inner"
+                            aria-label="Email untuk langganan newsletter">
                     <button type="submit" id="newsletter-submit-btn"
                             class="bg-accent text-white py-3 px-6 rounded-lg font-bold hover:bg-rose-600 transition-colors duration-200 shadow-lg shadow-accent/40 flex items-center justify-center space-x-2 text-sm sm:w-full">
                         <i class="fas fa-envelope"></i>
@@ -226,10 +501,199 @@
 
         </div>
         <div class="text-center text-sm mt-10 border-t border-primary/50 pt-5">
-            &copy; 2025 Toko Tervis. Hak Cipta Dilindungi.
+            © 2025 Toko Tervis. Hak Cipta Dilindungi.
         </div>
     </footer>
 
-    <script src="script.js" defer></script>
+    <script>
+        // Fungsi Toast (Dipindahkan ke sini agar mudah diakses)
+        function showToast(title, message, type = 'info') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            let colorClass = 'bg-blue-500';
+            let iconClass = 'fas fa-info-circle';
+
+            if (type === 'success') {
+                colorClass = 'bg-green-500';
+                iconClass = 'fas fa-check-circle';
+            } else if (type === 'error') {
+                colorClass = 'bg-red-500';
+                iconClass = 'fas fa-times-circle';
+            }
+
+            // Menambahkan kelas toast-notification agar animasi CSS kustom terpicu
+            toast.className = `p-4 rounded-xl shadow-lg text-white font-semibold ${colorClass} transition-all duration-300 transform translate-x-full opacity-0 flex items-center space-x-3 toast-notification`;
+            toast.innerHTML = `<i class="${iconClass} text-xl"></i> <div><p class="font-bold">${title}</p><p class="text-sm">${message}</p></div>`;
+            
+            container.prepend(toast);
+
+            // Animasi masuk (Mengandalkan CSS @keyframes: toast-in)
+            setTimeout(() => {
+                toast.classList.remove('translate-x-full', 'opacity-0');
+            }, 10);
+
+            // Animasi keluar
+            setTimeout(() => {
+                toast.classList.remove('translate-x-0', 'opacity-100');
+                toast.classList.add('translate-x-full', 'opacity-0');
+                // Hapus setelah selesai animasi
+                setTimeout(() => toast.remove(), 400); // 400ms sesuai durasi animasi
+            }, 5000);
+        }
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+            const mobileMenu = document.getElementById('mobileMenu');
+            const navLinks = document.querySelectorAll('#mobileMenu a, #desktop-nav a'); 
+            const sections = document.querySelectorAll('main section');
+            
+            // Toggle menu mobile
+            mobileMenuBtn.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+
+            /**
+             * Menampilkan tampilan default (grid produk)
+             */
+            const showProductView = () => {
+                sections.forEach(sec => sec.classList.add('hidden'));
+                document.getElementById('loader').classList.remove('hidden'); 
+                document.getElementById('product-grid').classList.remove('hidden');
+                document.getElementById('error-message').classList.add('hidden');
+                document.getElementById('no-results-message').classList.add('hidden');
+            }
+            
+            /**
+             * Mengatur kelas aktif pada navigasi
+             */
+            const setActiveNav = (currentSection) => {
+                navLinks.forEach(link => {
+                    const href = link.getAttribute('href');
+                    const dataSection = link.getAttribute('data-section');
+                    const isTarget = href && href.includes(currentSection);
+
+                    link.classList.remove('nav-active', 'nav-mobile-active');
+                    
+                    if (isTarget || (currentSection === 'home' && (href === '#' || href === 'index.html'))) {
+                        if (link.parentElement.id === 'desktop-nav') {
+                            link.classList.add('nav-active');
+                        } else {
+                            link.classList.add('nav-mobile-active');
+                        }
+                    }
+                });
+            };
+
+
+            /**
+             * Menavigasi ke section tertentu dan mengatur tampilan
+             */
+            const navigateToSection = (id) => {
+                document.getElementById('loader').classList.add('hidden');
+                document.getElementById('product-grid').classList.add('hidden');
+                sections.forEach(sec => sec.classList.add('hidden'));
+
+                if (id === '#' || id === 'index.html') {
+                    showProductView();
+                    setActiveNav('home');
+                } else {
+                    const targetSection = document.querySelector(id);
+                    if (targetSection) {
+                        targetSection.classList.remove('hidden');
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                        // Menyesuaikan penamaan section
+                        let sectionName = id.substring(1);
+                        if(sectionName.includes('contact-address-map') || sectionName.includes('direct-contact')) {
+                             sectionName = 'contact';
+                        }
+                        setActiveNav(sectionName);
+                    }
+                }
+            }
+
+            // Event listener untuk navigasi
+            navLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    const href = link.getAttribute('href');
+                    if (href && (href.startsWith('#') || href === 'index.html')) {
+                        e.preventDefault();
+                        navigateToSection(href); 
+                        mobileMenu.classList.add('hidden');
+                    }
+                });
+            });
+
+            // LOGIKA FORMULIR KONTAK BARU (direct-contact-form)
+            const directContactForm = document.getElementById('direct-contact-form');
+            const formSubmitBtn = document.getElementById('form-submit-btn');
+
+            if (directContactForm) {
+                directContactForm.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    
+                    formSubmitBtn.innerHTML = '<i class="fas fa-circle-notch fa-spin mr-2"></i> Mengirim...';
+                    formSubmitBtn.disabled = true;
+
+                    const name = document.getElementById('form-name').value;
+                    const email = document.getElementById('form-email').value;
+                    const message = document.getElementById('form-message').value;
+
+                    // Simulasi pengiriman data
+                    setTimeout(() => {
+                        formSubmitBtn.innerHTML = '<i class="fas fa-arrow-right"></i> <span>Kirim Pesan Sekarang</span>';
+                        formSubmitBtn.disabled = false;
+                        
+                        showToast('Pesan Terkirim!', `Terima kasih, ${name}. Pesan Anda telah kami terima.`, 'success');
+                        
+                        directContactForm.reset();
+                        
+                        console.log('Pesan Kontak Terkirim:', { name, email, message });
+                    }, 2000); 
+                });
+            }
+
+            // Logika Sidebar Keranjang & Modal Produk (Disimpan tetap)
+            const openCartBtn = document.getElementById('openCartBtn');
+            const closeCartBtn = document.getElementById('closeCartBtn');
+            const cartSidebar = document.getElementById('cartSidebar');
+            const productModal = document.getElementById('productModal');
+            const closeModalBtn = document.getElementById('closeModalBtn');
+            const modalContent = document.querySelector('.modal-content');
+
+            openCartBtn.addEventListener('click', () => {
+                cartSidebar.classList.remove('translate-x-full');
+            });
+
+            closeCartBtn.addEventListener('click', () => {
+                cartSidebar.classList.add('translate-x-full');
+            });
+
+            window.openModal = () => {
+                 productModal.classList.remove('hidden');
+                 setTimeout(() => {
+                    modalContent.classList.add('is-active');
+                 }, 10); 
+            };
+            
+            const closeProductModal = () => {
+                modalContent.classList.remove('is-active');
+                setTimeout(() => {
+                    productModal.classList.add('hidden');
+                }, 400); 
+            };
+
+            closeModalBtn.addEventListener('click', closeProductModal);
+            productModal.addEventListener('click', (e) => {
+                if (e.target === productModal) {
+                    closeProductModal();
+                }
+            });
+
+            // Inisialisasi tampilan awal
+            const currentHash = window.location.hash || '#';
+            navigateToSection(currentHash);
+        });
+    </script>
+    <script src="script.js" defer></script> 
 </body>
 </html>
